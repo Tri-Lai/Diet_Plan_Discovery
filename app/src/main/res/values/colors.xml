@@ -5,4 +5,5 @@
     <color name="neon">#D0FD3E</color>
     <color name="dark_theme">#1C1C1E</color>
     <color name="grey">#3A3A3C</color>
+    <color name="neutral">#999999</color>
 </resources>

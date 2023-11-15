@@ -3,12 +3,14 @@ package com.example.dietplandiscovery.Activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.dietplandiscovery.Helper.CustomAdapter;
@@ -17,11 +19,13 @@ import com.example.dietplandiscovery.Model.Food;
 import com.example.dietplandiscovery.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FoodListActivity extends AppCompatActivity implements ItemClickListener {
     private RecyclerView recyclerView;
     private ArrayList<Food> foodList;
     private CustomAdapter customAdapter;
+    private SearchView searchView;
     ActivityResultLauncher<Intent> launcher;
 
 
@@ -32,6 +36,20 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
 
         foodList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView_foodList);
+        searchView = (SearchView) findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return false;
+            }
+        });
 
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -143,5 +161,17 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         Intent goDetailViewIntent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
         goDetailViewIntent.putExtra("food_details", foodList.get(pos));
         launcher.launch(goDetailViewIntent);
+    }
+
+    public void filterList(String text) {
+        List<Food> filteredList = new ArrayList<>();
+
+        for (Food food: foodList) {
+            if (food.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(food);
+            } else {
+                customAdapter.setFilteredList(filteredList);
+            }
+        }
     }
 }

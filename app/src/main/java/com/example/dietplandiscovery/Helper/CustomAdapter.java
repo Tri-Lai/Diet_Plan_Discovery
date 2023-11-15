@@ -24,6 +24,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.FoodListVi
        this.foodList = foods;
     }
 
+    public void setFilteredList(List<Food> filteredList) {
+        this.foodList = filteredList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public FoodListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

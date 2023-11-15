@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Diet Plan Discovery</string>
+    <string name="food_image_header">Food image header</string>
+    <string name="calories_text">calories_text</string>
+    <string name="carbs_text">carbs_text\n</string>
+    <string name="protein_text">Protein</string>
+    <string name="fat_text">Fat</string>
 </resources>

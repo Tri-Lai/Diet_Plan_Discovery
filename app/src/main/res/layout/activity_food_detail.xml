@@ -14,6 +14,7 @@
         android:id="@+id/image_header_detailActivity"
         android:layout_width="match_parent"
         android:layout_height="380dp"
+        android:contentDescription="@string/food_image_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,19 +33,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:divider="@drawable/horizontal_divider"
-            android:showDividers="middle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_container_foodInfo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="12dp"
-                android:background="@color/grey">
+                android:padding="20dp"
+                android:elevation="15dp"
+                android:background="@drawable/section_bg">
 
                 <TextView
                     android:id="@+id/text_title_detailActivity"
@@ -53,29 +53,38 @@
                     android:text="Pizza"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_desc_detailActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="12dp"
                     android:inputType="textMultiLine"
                     android:lineSpacingMultiplier="1.42"
                     android:text="Pizza is a favorite food for many around the world. The addicting combination of delicious crust, sweet tomato sauce and salty mozzarella cheese is sure to please even the pickiest of eaters. However, it’s commonly labeled unhealthy, as it can be high in calories, sodium and carbs."
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title_detailActivity"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/layout_container_nutritionFacts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:divider="@drawable/vertical_divider"
                 android:showDividers="middle"
                 android:layout_marginTop="20dp"
                 android:padding="12sp"
-                android:background="@color/grey">
+                android:background="@drawable/section_bg">
 
 
                 <LinearLayout
@@ -91,6 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:contentDescription="@string/calories_text"
                         android:background="@drawable/calories_icon"/>
 
                     <TextView
@@ -126,6 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:contentDescription="@string/carbs_text"
                         android:background="@drawable/carbs_icon"/>
 
                     <TextView
@@ -161,6 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:contentDescription="@string/protein_text"
                         android:background="@drawable/protein_icon"/>
 
                     <TextView
@@ -196,6 +208,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/fat_text"
                         android:background="@drawable/fat_icon"/>
 
                     <TextView
@@ -218,11 +231,29 @@
                         android:textColor="#B3B3B3"/>
                 </LinearLayout>
 
+
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_container_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_addFood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add food"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_bg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-
-
     </ScrollView>
-
 </FrameLayout>
 
