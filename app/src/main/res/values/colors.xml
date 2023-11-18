@@ -6,4 +6,7 @@
     <color name="dark_theme">#1C1C1E</color>
     <color name="grey">#3A3A3C</color>
     <color name="neutral">#999999</color>
+    <color name="warning">#9b3b3b</color>
+    <color name="progressCircle_fg">#F0753B</color>
+    <color name="progressCircle_bg">#873A2E</color>
 </resources>

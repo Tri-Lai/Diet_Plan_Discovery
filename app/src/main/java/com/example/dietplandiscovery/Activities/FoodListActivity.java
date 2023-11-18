@@ -1,7 +1,6 @@
 package com.example.dietplandiscovery.Activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dietplandiscovery.Helper.CustomAdapter;
@@ -26,7 +26,9 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
     private ArrayList<Food> foodList;
     private CustomAdapter customAdapter;
     private SearchView searchView;
-    ActivityResultLauncher<Intent> launcher;
+    private TextView selectedFoodCount;
+    private ImageButton backBtn;
+    private ArrayList<Food> selectedFood;
 
 
     @Override
@@ -34,7 +36,11 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_list);
 
+        selectedFoodCount = (TextView) findViewById(R.id.text_currentSelectedFoodItems);
+        backBtn = (ImageButton) findViewById(R.id.button_back);
+
         foodList = new ArrayList<>();
+        selectedFood = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView_foodList);
         searchView = (SearchView) findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -50,14 +56,6 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
                 return false;
             }
         });
-
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        Toast.makeText(FoodListActivity.this, (String) data.getExtras().get("message"), Toast.LENGTH_SHORT).show();
-                    }
-                });
 
         Food grilled_chicken = new Food("Grilled chicken",
                 "Chicken is the most popular poultry in the world - and for good reason! " +
@@ -157,10 +155,25 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        selectedFoodCount.setText(String.format("You've selected %d food items", selectedFood.size()));
+
+        backBtn.setOnClickListener(v -> {
+            Intent goHomepage = new Intent(FoodListActivity.this, HomepageActivity.class);
+            goHomepage.putParcelableArrayListExtra("selected_food_list", selectedFood);
+            setResult(RESULT_OK, goHomepage);
+            finish();
+        });
+    }
+
+    @Override
     public void onClick(View view, int pos) {
-        Intent goDetailViewIntent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
-        goDetailViewIntent.putExtra("food_details", foodList.get(pos));
-        launcher.launch(goDetailViewIntent);
+        Intent goDetailView = new Intent(FoodListActivity.this, FoodDetailActivity.class);
+        goDetailView.putExtra("food_details", foodList.get(pos));
+//        launcher.launch(goDetailViewIntent);
+        startActivityForResult(goDetailView, 500);
     }
 
     public void filterList(String text) {
@@ -171,6 +184,25 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
                 filteredList.add(food);
             } else {
                 customAdapter.setFilteredList(filteredList);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == 500) {
+            if (resultCode == RESULT_OK) {
+                
+                if (data.getParcelableExtra("added_food") != null) {
+                    Food tempFood = data.getParcelableExtra("added_food");
+                    selectedFood.add(tempFood);
+                    Toast.makeText(this, String.format("%s has been added. %d", tempFood.getName(), selectedFood.size()), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "DEBUG: No food added", Toast.LENGTH_SHORT).show();
+                }
+                
             }
         }
     }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.example.dietplandiscovery.Activities.FoodListActivity;
 import com.example.dietplandiscovery.Activities.HomepageActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         button_start = (Button) findViewById(R.id.button_start);
 
         button_start.setOnClickListener(view -> {
-//            Intent intent = new Intent(MainActivity.this, FoodListActivity.class);
             Intent intent = new Intent(MainActivity.this, HomepageActivity.class);
             startActivity(intent);
         });
