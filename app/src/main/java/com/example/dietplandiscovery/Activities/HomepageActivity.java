@@ -1,3 +1,15 @@
+/*
+    RMIT University Vietnam
+    Course: COSC2657 Android Development
+    Semester: 2023C
+    Assessment: Assignment 1
+    Author: Lai Nghiep Tri
+    ID: s3799602
+    Created  date: 19/11/2023
+    Last modified: 19/11/2023
+    Acknowledgement: Figma UI, Nutritionix, Android Developer documentation, Geeksforgeeks
+ */
+
 package com.example.dietplandiscovery.Activities;
 
 import android.app.Dialog;
@@ -25,6 +37,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class HomepageActivity extends AppCompatActivity {
+    // Variables and Widgets
     ArrayList<Food> selectedFood;
     private int targetCalo = 0;
     private boolean mealChooseFlag = false;
@@ -41,6 +54,7 @@ public class HomepageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
+        // Init added food list
         selectedFood = new ArrayList<>();
 
         // Find all widgets
@@ -51,13 +65,15 @@ public class HomepageActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         currentDate.setText(formattedDate);
-
     }
     @Override
     protected void onResume() {
         super.onResume();
 
+        // Handle breakfast click event
         breakfastBtn.setOnClickListener(v -> {
+
+            // Disable the button function unless the target calories is defined
             if (mealChooseFlag) {
                 Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
                 intent.putExtra("meal_background", "breakfast");
@@ -67,7 +83,10 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Handle lunch click event
         lunchBtn.setOnClickListener(v -> {
+
+            // Disable the button function unless the target calories is defined
             if (mealChooseFlag) {
                 Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
                 intent.putExtra("meal_background", "lunch");
@@ -77,7 +96,10 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Handle dinner click event
         dinnerBtn.setOnClickListener(v -> {
+
+            // Disable the button function unless the target calories is defined
             if (mealChooseFlag) {
                 Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
                 intent.putExtra("meal_background", "dinner");
@@ -87,13 +109,20 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Set the initial value for eaten calories
         text_caloEaten.setText(Float.toString(caloEaten));
 
+        // Open a dialog to choose target calories
         chooseCaloBtn.setOnClickListener(v -> openDialog());
 
+        // Update the progress of calories, carbs, protein and fat based on the total consume in
+        // added food list
         updateProgressIndicator();
     }
 
+    /**
+     * Open a popup window to select for target calories
+     */
     private void openDialog() {
 
         // Create a Dialog object
@@ -123,14 +152,15 @@ public class HomepageActivity extends AppCompatActivity {
 
         final int[] temp = new int[1]; // Store the current custom value
 
-        currentSelectCalo.setText(String.format("%s calories", caloRange[numberpicker.getValue()]));
+        currentSelectCalo.setText(String.format("%s \ncalories per day", caloRange[numberpicker.getValue()]));
 
-        // Se
+        // Update label text for easy keep track with scrolled value constantly
         numberpicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
             temp[0] = Integer.parseInt(caloRange[newVal]);
-            currentSelectCalo.setText(String.format("%d calories", temp[0]));
+            currentSelectCalo.setText(String.format("%d \ncalories per day", temp[0]));
         });
 
+        // Confirm the selection
         chooseBtn.setOnClickListener(v -> {
             targetCalo = temp[0];
             chooseCaloBtn.setText(String.format("Target: %d calories", targetCalo));
@@ -138,12 +168,16 @@ public class HomepageActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
+        // Cancel the selection
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
 
+        // Show a dialog
         dialog.show();
     }
 
-
+    /**
+     * Find all widgets in xml
+     */
     private void findAllElements() {
          breakfastBtn = (ImageButton) findViewById(R.id.button_breakfast);
          lunchBtn = (ImageButton) findViewById(R.id.button_lunch);
@@ -164,6 +198,9 @@ public class HomepageActivity extends AppCompatActivity {
          progressBar_calories = (ProgressBar) findViewById(R.id.progressBar_calories);
     }
 
+    /**
+     * Update the progress of eaten calories, carbs, protein and fat
+     */
     private void updateProgressIndicator() {
         // If there are any selected food
         if (!selectedFood.isEmpty()) {
@@ -177,9 +214,12 @@ public class HomepageActivity extends AppCompatActivity {
                 rawFat += nutritionFacts[3];
             }
 
+            // Round calories value up to 2 decimal points
             float caloLeft = (float) (Math.round((targetCalo - caloEaten) * 100.0) / 100.0);
             caloEaten = (float) (Math.round(caloEaten * 100.0) / 100.0);
 
+
+            // Convert carbs, fat and protein from float to int type for display purpose
             int carbs = Math.round(rawCarbs);
             int fat = Math.round(rawFat);
             int protein = Math.round(rawProtein);
@@ -218,7 +258,6 @@ public class HomepageActivity extends AppCompatActivity {
             fatProgress.setText(Integer.toString(fat));
             proteinProgress.setText(Integer.toString(protein));
             text_caloLeft.setText((caloLeft > 0) ? Float.toString(caloLeft) : Float.toString(-caloLeft));
-//            text_caloLeft.setText(Integer.toString(caloLeftPercentage)); //DEBUG
             text_caloEaten.setText(Float.toString(caloEaten));
 
             text_caloStatus.setText((caloLeft < 0) ? "cal over" : "cal left");
@@ -231,8 +270,12 @@ public class HomepageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Check request code
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
+
+                // Get list of added food from FoodListActivity
                 try {
                     if (data.getParcelableArrayListExtra("selected_food_list") != null) {
                         selectedFood = data.getParcelableArrayListExtra("selected_food_list");

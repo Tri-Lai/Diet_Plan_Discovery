@@ -36,7 +36,8 @@
                 android:textAllCaps="false"
                 android:layout_marginTop="20dp"
                 android:background="@null"
-                android:drawableStart="@drawable/target_icon_16"/>
+                android:drawableStart="@drawable/long_jump"
+                android:drawablePadding="6dp"/>
 
             <TextView
                 android:id="@+id/text_caloEaten"

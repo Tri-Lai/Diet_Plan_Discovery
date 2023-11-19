@@ -1,3 +1,15 @@
+/*
+    RMIT University Vietnam
+    Course: COSC2657 Android Development
+    Semester: 2023C
+    Assessment: Assignment 1
+    Author: Lai Nghiep Tri
+    ID: s3799602
+    Created  date: 19/11/2023
+    Last modified: 19/11/2023
+    Acknowledgement: Figma UI, Nutritionix, Android Developer documentation, Geeksforgeeks
+ */
+
 package com.example.dietplandiscovery.Activities;
 
 import android.content.Intent;
@@ -14,6 +26,7 @@ import com.example.dietplandiscovery.Model.Food;
 import com.example.dietplandiscovery.R;
 
 public class FoodDetailActivity extends AppCompatActivity {
+    // Variables and Widgets
     Food food;
     TextView foodName, foodDesc, text_calo, text_fat, text_carbs, text_protein;
     ImageView foodImage;
@@ -24,27 +37,23 @@ public class FoodDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
 
-        food = getIntent().getParcelableExtra("food_details");
+        food = getIntent().getParcelableExtra("food_details"); // Get food details passed from FoodListActivity
+        findAllElements(); // Find all widgets
+        setContent(); // Set xml content
 
-        // Find all widgets
-        findAllElements();
-
-        // Set content for page
-        setContent();
-
-
+        // Back to previous activity and return food has been added
         button_addFood.setOnClickListener(v -> {
             Intent goFoodListActivity = new Intent(FoodDetailActivity.this, FoodListActivity.class);
             goFoodListActivity.putExtra("added_food", food);
             setResult(RESULT_OK, goFoodListActivity);
             finish();
         });
-
-
     }
 
+    /**
+     * Find all widgets in xml files
+     */
     protected void findAllElements() {
-//        food = getIntent().getParcelableExtra("food_details");
         foodName = (TextView) findViewById(R.id.text_title_detailActivity);
         foodDesc = (TextView) findViewById(R.id.text_desc_detailActivity);
         foodImage = (ImageView) findViewById(R.id.image_header_detailActivity);
@@ -57,12 +66,16 @@ public class FoodDetailActivity extends AppCompatActivity {
         button_addFood = (AppCompatButton) findViewById(R.id.button_addFood);
     }
 
+    /**
+     * Set content for widgets
+     */
     private void setContent() {
+        // Get nutrition factors from passed food
         float[] nutritionFacts = food.getNutrition();
-        float calo = nutritionFacts[0];
-        float carbs = nutritionFacts[1];
-        float protein = nutritionFacts[2];
-        float fat = nutritionFacts[3];
+        float calo = nutritionFacts[0];     // Get calories
+        float carbs = nutritionFacts[1];    // Get carbohydrate
+        float protein = nutritionFacts[2];  // Get protein
+        float fat = nutritionFacts[3];      // Get fat
 
         foodName.setText(food.getName());
         foodDesc.setText(food.getDesc());
@@ -74,13 +87,18 @@ public class FoodDetailActivity extends AppCompatActivity {
         text_fat.setText(Float.toString(fat));
     }
 
+    /**
+     * Handle returned data from Detail view
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Check the correct request code
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
                 try {
+                    // Get the food details using Parcelable object
                     if (data.getParcelableExtra("food_details") != null) {
                         float[] nutritionFacts = food.getNutrition();
                         float calo = nutritionFacts[0];
@@ -103,15 +121,5 @@ public class FoodDetailActivity extends AppCompatActivity {
                 }
             }
         }
-//        if (requestCode == 200) {
-//            if (resultCode == RESULT_OK) {
-//                String response = (String) data.getExtras().get("service");
-//                TextView display = (TextView) findViewById(R.id.display);
-//                display.setText("Thank you for selecting " + response + "
-//                        service.");
-//            }
-//        }
-
-
     }
 }

@@ -1,3 +1,15 @@
+/*
+    RMIT University Vietnam
+    Course: COSC2657 Android Development
+    Semester: 2023C
+    Assessment: Assignment 1
+    Author: Lai Nghiep Tri
+    ID: s3799602
+    Created  date: 19/11/2023
+    Last modified: 19/11/2023
+    Acknowledgement: Figma UI, Nutritionix, Android Developer documentation, Geeksforgeeks
+ */
+
 package com.example.dietplandiscovery.Activities;
 
 import android.content.Intent;
@@ -25,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FoodListActivity extends AppCompatActivity implements ItemClickListener {
+    // Variables and Widgets
     private RecyclerView recyclerView;
     private ArrayList<Food> foodList;
     private CustomAdapter customAdapter;
@@ -38,20 +51,17 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_list);
 
-        selectedFoodCount = (TextView) findViewById(R.id.text_currentSelectedFoodItems);
-        backBtn = (ImageButton) findViewById(R.id.button_back);
-        mealBackground = (ImageView) findViewById(R.id.image_header);
+        findAllElements(); // Find widgets
 
+        // Init all food list and added food list
         foodList = new ArrayList<>();
         selectedFood = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView_foodList);
-        searchView = (SearchView) findViewById(R.id.searchView);
-        searchView.clearFocus();
 
-
+        // Get intent from previous activity
         Intent i  = getIntent();
         handleIncomingIntent(i);
 
+        // Configure search view
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -65,8 +75,9 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
             }
         });
 
-        createSampleData();
+        createSampleData(); // Generate sample data
 
+        // Create an adapter
         customAdapter = new CustomAdapter(foodList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(customAdapter);
@@ -74,10 +85,28 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         customAdapter.setOnClickListener(this); // Link adapter with click listener
     }
 
-    private void handleIncomingIntent(Intent intent) throws NullPointerException{
-        String meal = (String) Objects.requireNonNull(intent.getExtras()).get("meal_background");
+    /**
+     * Find all widgets in xml file
+     */
+    private void findAllElements() {
+        selectedFoodCount = (TextView) findViewById(R.id.text_currentSelectedFoodItems);
+        backBtn = (ImageButton) findViewById(R.id.button_back);
+        mealBackground = (ImageView) findViewById(R.id.image_header);
+        recyclerView = findViewById(R.id.recyclerView_foodList);
+        searchView = (SearchView) findViewById(R.id.searchView);
+        searchView.clearFocus();
+    }
 
+    /**
+     * Display background with appropriate meal
+     *
+     * @param intent communication from HomepageActivity
+     * @throws NullPointerException
+     */
+    private void handleIncomingIntent(Intent intent) throws NullPointerException{
         try {
+            String meal = (String) Objects.requireNonNull(intent.getExtras()).get("meal_background");
+
             switch (meal) {
                 case "breakfast":
                     mealBackground.setImageResource(R.drawable.breakfast_background);
@@ -100,8 +129,10 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
     protected void onResume() {
         super.onResume();
 
+        // Show selected food amount
         selectedFoodCount.setText(String.format("You've selected %d food items", selectedFood.size()));
 
+        // Go back to homepage with list of added food
         backBtn.setOnClickListener(v -> {
             Intent goHomepage = new Intent(FoodListActivity.this, HomepageActivity.class);
             goHomepage.putParcelableArrayListExtra("selected_food_list", selectedFood);
@@ -110,6 +141,12 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         });
     }
 
+    /**
+     * Handle click event on each item in Recycler view
+     *
+     * @param view Parent view
+     * @param pos item position
+     */
     @Override
     public void onClick(View view, int pos) {
         Intent goDetailView = new Intent(FoodListActivity.this, FoodDetailActivity.class);
@@ -117,6 +154,11 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         startActivityForResult(goDetailView, 500);
     }
 
+    /**
+     * Use with search view to filter item based on matching text
+     *
+     * @param text name of item need to be searched
+     */
     public void filterList(String text) {
         List<Food> filteredList = new ArrayList<>();
 
@@ -132,13 +174,15 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+
+        // Check request code
         if (requestCode == 500) {
             if (resultCode == RESULT_OK) {
                 try {
+                    // Get the food info that has been added to meal
                     if (data.getParcelableExtra("added_food") != null) {
                         Food tempFood = data.getParcelableExtra("added_food");
-                        selectedFood.add(tempFood);
+                        selectedFood.add(tempFood); // Store to added list
                         Toast.makeText(this, String.format("%s has been added. %d", tempFood.getName(), selectedFood.size()), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "DEBUG: No food added", Toast.LENGTH_SHORT).show();
@@ -151,6 +195,9 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
         }
     }
 
+    /**
+     * Create list of sample data
+     */
     private void createSampleData() {
         Food grilled_chicken = new Food("Grilled chicken",
                 "Chicken is the most popular poultry in the world - and for good reason! " +
@@ -341,6 +388,7 @@ public class FoodListActivity extends AppCompatActivity implements ItemClickList
             new float[]{810.0f, 60.0f, 38.0f, 46.0f},
             R.drawable.bun_cha);
 
+        // Add food item to list
         foodList.add(grilled_chicken);
         foodList.add(pizza);
         foodList.add(pasta);

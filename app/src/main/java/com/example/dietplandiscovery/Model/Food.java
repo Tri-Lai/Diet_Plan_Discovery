@@ -1,3 +1,15 @@
+/*
+    RMIT University Vietnam
+    Course: COSC2657 Android Development
+    Semester: 2023C
+    Assessment: Assignment 1
+    Author: Lai Nghiep Tri
+    ID: s3799602
+    Created  date: 19/11/2023
+    Last modified: 19/11/2023
+    Acknowledgement: Figma UI, Nutritionix, Android Developer documentation, Geeksforgeeks
+ */
+
 package com.example.dietplandiscovery.Model;
 
 import android.os.Parcel;
@@ -8,12 +20,18 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Food Model
+ */
 public class Food implements Parcelable {
+
+    // Attributes
     private String name;
     private String desc;
     private float[] nutrition;
     private int img;
 
+    // Methods
     public Food(String name, String desc, float[] nutrition, int img) {
         this.name = name;
         this.desc = desc;

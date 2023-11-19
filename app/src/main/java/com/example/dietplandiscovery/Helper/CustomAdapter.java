@@ -1,3 +1,15 @@
+/*
+    RMIT University Vietnam
+    Course: COSC2657 Android Development
+    Semester: 2023C
+    Assessment: Assignment 1
+    Author: Lai Nghiep Tri
+    ID: s3799602
+    Created  date: 19/11/2023
+    Last modified: 19/11/2023
+    Acknowledgement: Figma UI, Nutritionix, Android Developer documentation, Geeksforgeeks
+ */
+
 package com.example.dietplandiscovery.Helper;
 
 import android.view.LayoutInflater;
@@ -17,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.FoodListViewHolder> {
-
+    // Variables and Widgets
     private List<Food> foodList;
     public ItemClickListener clickListener;
     public CustomAdapter(ArrayList<Food> foods) {
@@ -50,7 +62,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.FoodListVi
         return foodList.size();
     }
 
+    /**
+     * Create a view holder to xml file
+     */
     public class FoodListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        // Widgets
         TextView text_cardTitle, text_cardNutritionVal;
         ImageView image_cardImage;
         CardView cardView;
