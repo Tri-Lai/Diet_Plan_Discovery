@@ -46,4 +46,5 @@
     <string name="label_fat">Fat</string>
     <string name="label_fatVal">5.0 g</string>
     <string name="label_addFoodBtn">Add food</string>
+    <string name="symbol_cooking">symbol cooking</string>
 </resources>

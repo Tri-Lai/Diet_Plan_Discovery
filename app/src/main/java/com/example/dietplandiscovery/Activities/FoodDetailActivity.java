@@ -2,6 +2,7 @@ package com.example.dietplandiscovery.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class FoodDetailActivity extends AppCompatActivity {
             setResult(RESULT_OK, goFoodListActivity);
             finish();
         });
+
+
     }
 
     protected void findAllElements() {
@@ -77,21 +80,26 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
-                if (data.getParcelableExtra("food_details") != null) {
-                    float[] nutritionFacts = food.getNutrition();
-                    float calo = nutritionFacts[0];
-                    float carbs = nutritionFacts[1];
-                    float protein = nutritionFacts[2];
-                    float fat = nutritionFacts[3];
+                try {
+                    if (data.getParcelableExtra("food_details") != null) {
+                        float[] nutritionFacts = food.getNutrition();
+                        float calo = nutritionFacts[0];
+                        float carbs = nutritionFacts[1];
+                        float protein = nutritionFacts[2];
+                        float fat = nutritionFacts[3];
 
-                    foodName.setText(food.getName());
-                    foodDesc.setText(food.getDesc());
-                    foodImage.setImageResource(food.getImgUrl());
+                        foodName.setText(food.getName());
+                        foodDesc.setText(food.getDesc());
+                        foodImage.setImageResource(food.getImgUrl());
 
-                    text_calo.setText(Float.toString(calo));
-                    text_carbs.setText(Float.toString(carbs));
-                    text_protein.setText(Float.toString(protein));
-                    text_fat.setText(Float.toString(fat));
+                        text_calo.setText(Float.toString(calo));
+                        text_carbs.setText(Float.toString(carbs));
+                        text_protein.setText(Float.toString(protein));
+                        text_fat.setText(Float.toString(fat));
+                    }
+                } catch (NullPointerException e) {
+                    Log.d("Bug", "Details of food is not passed to Detail View");
+                    e.printStackTrace();
                 }
             }
         }

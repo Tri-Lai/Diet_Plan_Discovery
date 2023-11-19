@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
@@ -26,6 +27,7 @@ import java.util.Locale;
 public class HomepageActivity extends AppCompatActivity {
     ArrayList<Food> selectedFood;
     private int targetCalo = 0;
+    private boolean mealChooseFlag = false;
     TextView currentDate, fatProgress, proteinProgress, carbsProgress, text_caloEaten, text_caloLeft,
     text_caloStatus;
     ImageButton breakfastBtn, lunchBtn, dinnerBtn;
@@ -50,14 +52,40 @@ public class HomepageActivity extends AppCompatActivity {
         String formattedDate = df.format(c);
         currentDate.setText(formattedDate);
 
-        breakfastBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
-            startActivityForResult(intent, 100);
-        });
     }
     @Override
     protected void onResume() {
         super.onResume();
+
+        breakfastBtn.setOnClickListener(v -> {
+            if (mealChooseFlag) {
+                Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
+                intent.putExtra("meal_background", "breakfast");
+                startActivityForResult(intent, 100);
+            } else {
+                Toast.makeText(this, "Choose target calories first (at top screen).", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        lunchBtn.setOnClickListener(v -> {
+            if (mealChooseFlag) {
+                Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
+                intent.putExtra("meal_background", "lunch");
+                startActivityForResult(intent, 100);
+            } else {
+                Toast.makeText(this, "Choose target calories first (at top screen).", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dinnerBtn.setOnClickListener(v -> {
+            if (mealChooseFlag) {
+                Intent intent = new Intent(HomepageActivity.this, FoodListActivity.class);
+                intent.putExtra("meal_background", "dinner");
+                startActivityForResult(intent, 100);
+            } else {
+                Toast.makeText(this, "Choose target calories first (at top screen).", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         text_caloEaten.setText(Float.toString(caloEaten));
 
@@ -74,7 +102,7 @@ public class HomepageActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.target_calories_picker);
 
         // Find widgets in dialog
-        TextView currentSelectCalo = dialog.findViewById(R.id.text_currentSelectedCalo);
+        TextView currentSelectCalo = (TextView) dialog.findViewById(R.id.text_currentSelectedCalo);
         numberpicker = (NumberPicker) dialog.findViewById(R.id.numberPicker_calories);
         chooseBtn = (AppCompatButton) dialog.findViewById(R.id.button_pickerChoose);
         cancelBtn = (AppCompatButton) dialog.findViewById(R.id.button_pickerCancel);
@@ -106,6 +134,7 @@ public class HomepageActivity extends AppCompatActivity {
         chooseBtn.setOnClickListener(v -> {
             targetCalo = temp[0];
             chooseCaloBtn.setText(String.format("Target: %d calories", targetCalo));
+            mealChooseFlag = true;
             dialog.dismiss();
         });
 
@@ -172,12 +201,12 @@ public class HomepageActivity extends AppCompatActivity {
                             ColorStateList.valueOf(Color.parseColor("#9b3b3b")) :
                             ColorStateList.valueOf(Color.parseColor("#D0FD3E")));
 
-            progressBar_carbs.incrementProgressBy(carbs);
-            progressBar_protein.incrementProgressBy(protein);
-            progressBar_fat.incrementProgressBy(fat);
+            progressBar_carbs.setProgress(carbs);
+            progressBar_protein.setProgress(protein);
+            progressBar_fat.setProgress(fat);
 
             int caloLeftPercentage = (int) (100 - (caloLeft / targetCalo * 100.0));
-            progressBar_calories.incrementProgressBy(caloLeftPercentage);
+            progressBar_calories.setProgress(caloLeftPercentage);
 
 
             // Display text-based values with color
@@ -188,8 +217,8 @@ public class HomepageActivity extends AppCompatActivity {
             carbsProgress.setText(Integer.toString(carbs));
             fatProgress.setText(Integer.toString(fat));
             proteinProgress.setText(Integer.toString(protein));
-            text_caloLeft.setText(Float.toString(caloLeft));
-//            text_caloLeft.setText(Integer.toString(caloLeftPercentage));
+            text_caloLeft.setText((caloLeft > 0) ? Float.toString(caloLeft) : Float.toString(-caloLeft));
+//            text_caloLeft.setText(Integer.toString(caloLeftPercentage)); //DEBUG
             text_caloEaten.setText(Float.toString(caloEaten));
 
             text_caloStatus.setText((caloLeft < 0) ? "cal over" : "cal left");
@@ -204,11 +233,16 @@ public class HomepageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
-                if (data.getParcelableArrayListExtra("selected_food_list") != null) {
-                    selectedFood = data.getParcelableArrayListExtra("selected_food_list");
-                    Toast.makeText(this, String.format("DEBUG: %d has been added.", selectedFood.size()), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "DEBUG: No food added", Toast.LENGTH_SHORT).show();
+                try {
+                    if (data.getParcelableArrayListExtra("selected_food_list") != null) {
+                        selectedFood = data.getParcelableArrayListExtra("selected_food_list");
+                        Toast.makeText(this, String.format("%d food has added to your meal.", selectedFood.size()), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "No food selected", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NullPointerException e) {
+                    Log.d("Bug", "Selected food list not found");
+                    e.printStackTrace();
                 }
             }
         }

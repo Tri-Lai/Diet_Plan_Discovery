@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_container_cardItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -8,11 +8,13 @@
     app:cardBackgroundColor="@color/grey"
     app:cardElevation="20dp"
     android:layout_margin="20dp"
-    android:background="@drawable/section_bg">
+    android:background="@drawable/section_bg"
+    app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/image_cardImage"
@@ -31,6 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:lines="2"
             android:text="@string/label_foodName"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -42,7 +46,6 @@
             android:id="@+id/text_cardNutritionVal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:text="@string/label_caloValue"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/text_cardTitle"
@@ -57,5 +60,14 @@
             app:layout_constraintStart_toEndOf="@+id/text_cardNutritionVal"
             app:layout_constraintTop_toTopOf="@+id/text_cardNutritionVal" />
 
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/dish_icon_128"
+            android:translationX="18dp"
+            android:contentDescription="@string/symbol_cooking"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

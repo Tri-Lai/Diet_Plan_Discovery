@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     tools:context=".Activities.FoodDetailActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,12 +22,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="620dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="256dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp">
-
+        android:layout_marginBottom="20dp"
+        android:translationY="-300dp">
 
         <LinearLayout
             android:id="@+id/layout_container"
@@ -35,7 +35,9 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:paddingTop="200dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_container_foodInfo"
@@ -77,30 +79,30 @@
                 android:id="@+id/layout_container_nutritionFacts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:divider="@drawable/vertical_divider"
-                android:showDividers="middle"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/section_bg"
+                android:baselineAligned="false"
+                android:divider="@drawable/vertical_divider"
+                android:orientation="horizontal"
                 android:padding="12sp"
-                android:background="@drawable/section_bg">
+                android:showDividers="middle">
 
 
                 <LinearLayout
                     android:id="@+id/row_calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/calories_text"
-                        android:background="@drawable/calories_icon"/>
+                        android:background="@drawable/calories_icon"
+                        android:contentDescription="@string/calories_text" />
 
                     <TextView
                         android:id="@+id/text_calories"
@@ -109,70 +111,70 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/label_calories"
-                        android:textSize="18sp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/text_caloriesVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_caloValue"
-                        android:textSize="18sp"
-                        android:textColor="#B3B3B3"/>
+                        android:textColor="#B3B3B3"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/row_carbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/carbs_text"
-                        android:background="@drawable/carbs_icon"/>
+                        android:background="@drawable/carbs_icon"
+                        android:contentDescription="@string/carbs_text" />
 
                     <TextView
                         android:id="@+id/text_carbs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_carbs"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:textSize="18sp"
+                        android:text="@string/label_carbs"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/text_carbsVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_carbsVal"
-                        android:textSize="18sp"
-                        android:textColor="#B3B3B3"/>
+                        android:textColor="#B3B3B3"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/row_protein"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/protein_text"
-                        android:background="@drawable/protein_icon"/>
+                        android:background="@drawable/protein_icon"
+                        android:contentDescription="@string/protein_text" />
 
                     <TextView
                         android:id="@+id/text_protein"
@@ -181,33 +183,33 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/label_protein"
-                        android:textSize="18sp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/text_proteinVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_proteinVal"
-                        android:textSize="18sp"
-                        android:textColor="#B3B3B3"/>
+                        android:textColor="#B3B3B3"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/row_fat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/fat_text"
-                        android:background="@drawable/fat_icon"/>
+                        android:background="@drawable/fat_icon"
+                        android:contentDescription="@string/fat_text" />
 
                     <TextView
                         android:id="@+id/text_fat"
@@ -216,19 +218,18 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/label_fat"
-                        android:textSize="18sp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/text_fatVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_fatVal"
-                        android:textSize="18sp"
-                        android:textColor="#B3B3B3"/>
+                        android:textColor="#B3B3B3"
+                        android:textSize="18sp" />
                 </LinearLayout>
-
 
             </LinearLayout>
 
@@ -242,16 +243,16 @@
                     android:id="@+id/button_addFood"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/button_bg"
                     android:text="@string/label_addFoodBtn"
                     android:textStyle="bold"
-                    android:background="@drawable/button_bg"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</LinearLayout>
 
